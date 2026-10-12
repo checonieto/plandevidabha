@@ -176,7 +176,7 @@ function quiz(h,qs,thr,ok,txt){const Q=qs.map(([q,o,c])=>({q,o:o.map((t,i)=>[t,i
 h.innerHTML=Q.map((x,i)=>`<div class=qq><p><b>${i+1}.</b> ${x.q}</p>${x.o.map(([t],j)=>`<label class=op><input type=radio name=q${i} value="${i},${j}"> ${t}</label>`).join('')}</div>`).join('')+`<div class=row><span class=res></span><button class=b>Revisar respuestas</button></div>`;
 h.onchange=e=>{const[a,b]=e.target.value.split(',');Q[a].a=+b};
 h.querySelector('.b').onclick=function(){if(Q.some(x=>x.a<0))return toast('Responde todas las preguntas');let s=0;
-h.querySelectorAll('.qq').forEach((d,i)=>{const x=Q[i],r=x.o[x.a][1];s+=r;d.classList.add(r?'ok':'bad');d.querySelectorAll('.op').forEach((l,j)=>{l.classList.add(x.o[j][1]?'ok':j==x.a?'bad':'');l.firstElementChild.disabled=true})});
+h.querySelectorAll('.qq').forEach((d,i)=>{const x=Q[i],r=x.o[x.a][1];s+=r;d.classList.add(r?'ok':'bad');d.querySelectorAll('.op').forEach((l,j)=>{{const c=x.o[j][1]?'ok':j==x.a?'bad':'';if(c)l.classList.add(c)}l.firstElementChild.disabled=true})});
 const p=s>=Math.ceil(Q.length*thr),r=h.querySelector('.res');r.textContent=`${s}/${Q.length} · ${p?'¡Aprobado!':'Repasa las respuestas marcadas e inténtalo de nuevo.'}`;
 if(p){this.remove();ok()}else{this.textContent='Reintentar';this.onclick=()=>quiz(h,qs,thr,ok)}}}
 function sel(h,a,ok){h.innerHTML=a.i.map(([t],i)=>`<div class=qq><p><b>${i+1}.</b> ${t}</p><select><option value=-1>Elige…</option>${a.o.map((o,j)=>`<option value=${j}>${o}</option>`).join('')}</select><small class=fb></small></div>`).join('')+`<div class=row><span class=res></span><button class=b>Comprobar</button></div>`;
